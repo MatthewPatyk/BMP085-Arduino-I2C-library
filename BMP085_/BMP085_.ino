@@ -33,7 +33,7 @@ void loop()
 	if((actualTime - previousTime) >= 10)
 	{
 		Barometer.read();
-		// Data is valid after MOVING_AVERAGE_RANGE samples!
+		// Data is valid after ~1000ms by default, check README!
 		Status.printMessage("Pressure\t" + String(Barometer.getPressure()) + "\tAltitude\t" + String(Barometer.getAltitude()) + "\tTemperature\t" + String(Barometer.getTemperature()));
 		
 		previousTime = actualTime;

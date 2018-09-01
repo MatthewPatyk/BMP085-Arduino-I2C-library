@@ -35,7 +35,7 @@ The working example for this library is writen in [Atmel Studio 7](http://www.mi
  *The Due MCU cannot be exposed to the voltage above 3.3V level!
  
 ## Example 
-To see a real-life example open AS7 project file `BMP085_.atsln` and upload the (`BMP085_.ino`) to a micro-controller. You should see somethink like that on Serial Monitor (baud rate = 115200):
+To see a real-life example open AS7 project file `BMP085_.atsln` and upload the `BMP085_.ino` to a micro-controller. You should see somethink like that on Serial Monitor (baud rate = 115200):
 ```
 2	Serial initialized with baudrate = 115200
 6	Found BMP085 searching device with ID = 0x77
@@ -54,6 +54,24 @@ To change above in `BMP085_.ino` file uncommend and choose appropriate in below:
 // Set Mode or use defaults from BMP085::init()
 //	Barometer.setMode(->your_setting<-);
 ```
+
+#### Moving average:
+By default in the library is working moving average over pressure data in order to get better results. You can disable it by changing in `BMP085.h` file the `ENABLE_MOVING_AVERAGE_FILTERING` define to `0x00`:
+```
+#define ENABLE_MOVING_AVERAGE_FILTERING		0x00
+```
+Also, you can set the number of samples for moving average by changing in `BMP085.h` file the `BMP085_MOVING_AVERAGE_RANGE` define to appropriate, by default:
+```
+#define BMP085_MOVING_AVERAGE_RANGE		20
+```
+**Important**: The pressure and altitude values are valid after 
+```
+2 * BMP085_MOVING_AVERAGE_RANGE * conversion time depending on Mode settings
+```
+miliseconds, by default: `mode = ultra high resoultion` and `BMP085_MOVING_AVERAGE_RANGE = 20` it is after ~1000 ms.
+
+#### Polling:
+`BMP085::read()` method can be polling in loop, which provide the fastest way to get new data from barometer. There is a mechanism that is responsible for waiting for the barometer to be asked for new data without blocking the processor.
 
 ## Author 
 * 2018, **Mateusz Patyk**, <matpatyk@gmail.com> 
